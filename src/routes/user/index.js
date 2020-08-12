@@ -27,7 +27,7 @@ router.post('/login', async(req, res) => {
         const token = await user.generateAuthToken()
         res.send({ user, token })
     } catch (error) {
-        res.status(400).send(error)
+        res.status(400).send({ error: error.message })
     }
 
 })
@@ -35,6 +35,29 @@ router.post('/login', async(req, res) => {
 router.get('/me', auth, async(req, res) => {
     // View logged in user profile
     res.send(req.user)
+})
+
+router.patch('/me/update', auth, async(req, res) => {
+    // update user
+    try {
+
+        const { name, surname, phone,  password } = req.body
+        const email = req.user.email;
+        let user = await User.findByCredentials(email, password)
+
+        if (!user) {
+            return res.status(401).send({error: 'The password entered does not match. Please try again.'})
+        }
+        user.name = name;
+        user.surname = surname;
+        user.phone = phone;
+
+        await user.save();
+
+        res.status(200).send({ user })
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
 })
 
 router.post('/me/logout', auth, async (req, res) => {

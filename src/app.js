@@ -12,7 +12,7 @@ require('./db/db')
 // Setup server port
 let http = require('http');
 let https = require('https');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 
 // allow cross origin requests from STMUCC CLIENT
@@ -25,7 +25,7 @@ app.use(cors({
 //      console.log('Running StMUCC RestAPI on port ' + port);
 // });
 http.createServer(app).listen(port, '0.0.0.0')
-https.createServer(app).listen('3001', '0.0.0.0')
+https.createServer(app).listen('5001', '0.0.0.0')
 
 // Setup bodyParser
 var bodyParser = require('body-parser');
