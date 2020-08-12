@@ -43,7 +43,7 @@ router.patch('/me/update', auth, async(req, res) => {
 
         const { name, surname, phone,  password } = req.body
         const email = req.user.email;
-        let user = await User.findByCredentials(email, password)
+        let user = await User.checkCredentials(email, password)
 
         if (!user) {
             return res.status(401).send({error: 'The password entered does not match. Please try again.'})
@@ -55,6 +55,35 @@ router.patch('/me/update', auth, async(req, res) => {
         await user.save();
 
         res.status(200).send({ user })
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+})
+
+router.post('/me/delete/verify', auth, async(req, res) => {
+    // update user
+    try {
+
+        const { password } = req.body
+        const email = req.user.email;
+        let user = await User.checkCredentials(email, password)
+
+        if (!user) {
+            return res.status(401).send({error: 'Sorry, please check that all of your information is correct.'})
+        }
+        res.status(200).send({ message: 'Deactivating your account will stop it from working. To order with us again, you’ll have to create a new account. Do you still want to go ahead?'})
+    } catch (error) {
+        res.status(400).send({ error: error.message })
+    }
+})
+
+router.delete('/me/delete', auth, async(req, res) => {
+    // update user
+    try {
+        const user = req.user;
+        await user.delete();
+
+        res.status(200).send({ message: 'Your account was successfully deactivated.'})
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
