@@ -33,8 +33,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-// Import routes
+// Import api routes
 let apiRoutes = require('./routes/index.route')
+
+// import shops route 
+const shopRoute = require('./routes/shop');
 
 // Use Api routes in the App
 app.use('/api', apiRoutes)
+app.use('/v1', shopRoute)
