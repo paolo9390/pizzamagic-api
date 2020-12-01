@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+ObjectId = Schema.ObjectId;
 
 const UserPreference = new Schema({
-shop_id:  String, // String is shorthand for {type: String}
-fulfillment_method: {
-    type: String,
-    required: false,
-    trim: true
-},
-address_id: String
+    shop_id: Number, 
+    fulfillment_method: {
+        type: String,
+        required: false,
+        trim: true
+    },
+    address_id: ObjectId
 })
 
 // Export the model
-module.exports = mongoose.model('userPreference', UserPreference);
+module.exports = mongoose.model('user-preference', UserPreference);
